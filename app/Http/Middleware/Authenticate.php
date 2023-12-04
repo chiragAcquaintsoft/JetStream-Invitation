@@ -19,11 +19,13 @@ class Authenticate extends Middleware
             /** @var TeamInvitation $teamInvitation */
             $teamInvitation = TeamInvitation::query()->find($invitationId);
             $teamName = $teamInvitation->team->name ?? null;
+            $teamId = $teamInvitation->team->id ?? null;
             
             // We should store session value as well, so we can prevent email confirmation
             // since they already responded to an TeamInvitation.
             if ($teamName) {
                 $request->session()->put('teamInvitation', $teamName);
+                $request->session()->put('teamInvitationId', $teamId);
             } else {
                 /**
                  * If the invitation is deleted (already fulfilled), remove the
